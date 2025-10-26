@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "beat-the-maths"
+version = "0.1.0"
+description = "A command-line math quiz game to test and improve your mathematic skills."
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [
+    { name = "Vincent Mardon", email = "mardon.vincent@gmail.com"}
+]
+dependencies = []
+
+[project.scripts]
+beat-the-maths = "beat_the_maths.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["beat_the_maths"]

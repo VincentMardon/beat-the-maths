@@ -1,0 +1,22 @@
+# Python
+___pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+.env
+.venv/
+build/
+dist/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Personal files
+beat-the-maths-tree.txt
