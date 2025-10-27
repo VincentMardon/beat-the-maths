@@ -3,6 +3,7 @@ import time
 from .services.quiz_engine.problem_generator import problem_generator
 
 from .io.inputs.parameters import input_params
+from .io.inputs.exercise_response import input_response
 from .io.outputs.title import print_title
 from .io.outputs.game import print_success_msg, print_failure_msg
 
@@ -26,9 +27,7 @@ def main():
 
     problem, solution = problem_generator(difficulty_level=level, exercise_type=etype)
 
-    start_time = time.time()
-    response = input(problem).strip()
-    duration = time.time() - start_time
+    response, duration = input_response(problem)
 
     print()  # Blank line for better readability
 
