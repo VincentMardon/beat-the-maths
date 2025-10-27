@@ -1,3 +1,4 @@
+import time
 from .services.quiz_engine.problem_generator import problem_generator
 
 from .io.inputs.parameters import input_params
@@ -23,15 +24,24 @@ def main():
 
     print()  # Blank line for better readability
 
-    problem, solution = problem_generator(difficulty_level=level, exercise_type=etype)
+    score = 0
+    for i in range(10):
+        problem, solution = problem_generator(difficulty_level=level, exercise_type=etype)
 
-    response, duration = input_response(problem)
+        response, duration = input_response(problem, i+1)
 
-    print()  # Blank line for better readability
+        if response.isdigit() and int(response) == solution:
+            print_success_msg(duration)
+            print() # Blank line for better readability
+            score += 1
+        else:
+            print_failure_msg(solution, duration)
+            print() # Blank lune for better readability
 
-    if response.isdigit() and int(response) == solution:
-        print_success_msg(duration)
-    else:
-        print_failure_msg(solution, duration)
+    print(f'You finish the game with {score} points.')
 
-    print()  # Blank line at the end for better readability
+    time.sleep(2)
+
+    print('Thank you so much for playing my game!')
+    
+    time.sleep(5)

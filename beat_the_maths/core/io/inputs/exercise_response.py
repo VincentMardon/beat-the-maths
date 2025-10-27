@@ -1,7 +1,7 @@
 import time
 
-def input_response(problem) -> str:
+def input_response(problem: int, exercise_number: int) -> str:
     start_time = time.time()
-    response = input(problem).strip()
+    response = input(f"{exercise_number}. Combien font {problem}").strip()
     duration = time.time() - start_time
     return response, duration
