@@ -4,8 +4,7 @@ from .io.inputs.exercise_response import input_response
 from .io.inputs.parameters import input_params
 from .io.outputs.game import print_failure_msg, print_success_msg
 from .io.outputs.title import print_title
-from .services.quiz_engine.game_session import GameSession
-from .services.quiz_engine.problem_generator import problem_generator
+from .services.quiz_engine.quiz_engine import QuizEngine
 
 # colorama is optional, but helps with Windows terminal compatibility.
 # Considering moves this import inside a setup.py file or a main guard.
@@ -24,23 +23,19 @@ def main():
 
     # Get user preferences for difficulty level and exercise type
     config = input_params()
-    session = GameSession(config=config)
+    engine = QuizEngine(config=config)
 
     print()  # Blank line for better readability
 
-    while not session.is_complete:
-        problem = problem_generator(
-            difficulty=session.config.difficulty,
-            operation=session.config.operation,
-        )
+    while not engine.session.is_complete:
+        problem = engine.next_problem()
 
         response, duration = input_response(
             problem.question,
-            session.next_question_number,
+            engine.session.next_question_number,
         )
 
-        result = session.record_answer(
-            problem=problem,
+        result = engine.submit_answer(
             response=response,
             duration=duration,
         )
@@ -52,7 +47,7 @@ def main():
             print_failure_msg(result.problem.solution, result.duration)
             print()  # Blank line for better readability
 
-    print(f"You finish the game with {session.score} points.")
+    print(f"You finish the game with {engine.session.score} points.")
 
     time.sleep(2)
 

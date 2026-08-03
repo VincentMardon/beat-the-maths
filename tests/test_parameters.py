@@ -6,7 +6,7 @@ from beat_the_maths.core.services.quiz_engine.quiz_config import (
 )
 
 
-def test_input_params_returns_quizz_config(monkeypatch):
+def test_input_params_returns_quiz_config(monkeypatch):
     answers = iter(["1", "2"])
 
     monkeypatch.setattr(

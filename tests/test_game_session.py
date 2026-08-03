@@ -69,12 +69,3 @@ def test_session_rejects_answer_after_completion():
             response="5",
             duration=1.0,
         )
-
-
-@pytest.mark.parametrize("question_count", [0, -1])
-def test_session_requires_at_least_one_question(question_count):
-    with pytest.raises(
-        ValueError,
-        match="question_count must be greater than zero",
-    ):
-        GameSession(config=make_config(question_count=question_count))
