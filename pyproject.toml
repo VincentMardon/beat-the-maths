@@ -12,7 +12,9 @@ license = { text = "MIT" }
 authors = [
     { name = "Vincent Mardon", email = "mardon.vincent@gmail.com"}
 ]
-dependencies = []
+dependencies = [
+    "pygame>=2.6.1,<3",
+]
 
 [project.optional-dependencies]
 dev = [
@@ -23,6 +25,7 @@ dev = [
 
 [project.scripts]
 beat-the-maths = "beat_the_maths.__main__:main"
+beat-the-maths-gui = "beat_the_maths.ui.pygame_app:main"
 
 [tool.setuptools.packages.find]
 include = ["beat_the_maths*"]
