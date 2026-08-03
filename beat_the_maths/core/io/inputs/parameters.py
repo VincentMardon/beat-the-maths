@@ -1,29 +1,25 @@
 from ....data.texts.parameters import DIFFICULTY_LEVEL, EXERCISE_TYPE
+from ...services.quiz_engine.quiz_config import (
+    Difficulty,
+    Operation,
+    QuizConfig,
+)
 from ..outputs.game import print_invalid_input_msg
 
 
-# Function to get user input for difficulty level and exercise type
-def input_params() -> tuple[int, int]:
+def input_params() -> QuizConfig:
     while True:
-        etype_list = [1, 2, 3, 4]
         try:
-            etype = int(input(EXERCISE_TYPE).strip())
-            if etype in etype_list:
-                break
-            else:
-                raise ValueError
+            operation = Operation(int(input(EXERCISE_TYPE).strip()))
+            break
         except ValueError:
-            print_invalid_input_msg(maximum=len(etype_list))
+            print_invalid_input_msg(maximum=len(Operation))
 
     while True:
-        level_list = [1, 2, 3]
         try:
-            level = int(input(DIFFICULTY_LEVEL).strip())
-            if level in level_list:
-                break
-            else:
-                raise ValueError
+            difficulty = Difficulty(int(input(DIFFICULTY_LEVEL).strip()))
+            break
         except ValueError:
-            print_invalid_input_msg(max=len(level_list))
+            print_invalid_input_msg(maximum=len(Difficulty))
 
-    return etype, level
+    return QuizConfig(difficulty=difficulty, operation=operation)

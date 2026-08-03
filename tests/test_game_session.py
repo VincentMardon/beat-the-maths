@@ -2,13 +2,23 @@ import pytest
 
 from beat_the_maths.core.services.quiz_engine.game_session import GameSession
 from beat_the_maths.core.services.quiz_engine.problems.problem import Problem
+from beat_the_maths.core.services.quiz_engine.quiz_config import (
+    Difficulty,
+    Operation,
+    QuizConfig,
+)
+
+
+def make_config(question_count: int = 10) -> QuizConfig:
+    return QuizConfig(
+        difficulty=Difficulty.EASY,
+        operation=Operation.ADDITION,
+        question_count=question_count,
+    )
 
 
 def test_new_session_has_no_results():
-    session = GameSession(
-        difficulty_level=1,
-        exercise_type=1,
-    )
+    session = GameSession(config=make_config())
 
     assert session.results == ()
     assert session.answered_count == 0
@@ -18,11 +28,7 @@ def test_new_session_has_no_results():
 
 
 def test_session_records_answers_and_calculates_score():
-    session = GameSession(
-        difficulty_level=1,
-        exercise_type=1,
-        question_count=2,
-    )
+    session = GameSession(config=make_config(question_count=2))
     problem = Problem(question="2 + 3 = ? ", solution=5)
 
     first_result = session.record_answer(
@@ -45,11 +51,7 @@ def test_session_records_answers_and_calculates_score():
 
 
 def test_session_rejects_answer_after_completion():
-    session = GameSession(
-        difficulty_level=1,
-        exercise_type=1,
-        question_count=1,
-    )
+    session = GameSession(config=make_config(question_count=1))
     problem = Problem(question="2 + 3 = ? ", solution=5)
 
     session.record_answer(
@@ -75,8 +77,4 @@ def test_session_requires_at_least_one_question(question_count):
         ValueError,
         match="question_count must be greater than zero",
     ):
-        GameSession(
-            difficulty_level=1,
-            exercise_type=1,
-            question_count=question_count,
-        )
+        GameSession(config=make_config(question_count=question_count))

@@ -23,19 +23,15 @@ def main():
     print_title()
 
     # Get user preferences for difficulty level and exercise type
-    etype, level = input_params()
-
-    session = GameSession(
-        difficulty_level=level,
-        exercise_type=etype,
-    )
+    config = input_params()
+    session = GameSession(config=config)
 
     print()  # Blank line for better readability
 
     while not session.is_complete:
         problem = problem_generator(
-            difficulty_level=session.difficulty_level,
-            exercise_type=session.exercise_type,
+            difficulty=session.config.difficulty,
+            operation=session.config.operation,
         )
 
         response, duration = input_response(

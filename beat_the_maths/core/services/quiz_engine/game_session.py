@@ -2,22 +2,17 @@ from dataclasses import dataclass, field
 
 from .answer_result import AnswerResult
 from .problems.problem import Problem
+from .quiz_config import QuizConfig
 
 
 @dataclass(slots=True)
 class GameSession:
-    difficulty_level: int
-    exercise_type: int
-    question_count: int = 10
+    config: QuizConfig
     _results: list[AnswerResult] = field(
         default_factory=list,
         init=False,
         repr=False,
     )
-
-    def __post_init__(self) -> None:
-        if self.question_count <= 0:
-            raise ValueError("question_count must be greater than zero")
 
     @property
     def results(self) -> tuple[AnswerResult, ...]:
@@ -37,7 +32,7 @@ class GameSession:
 
     @property
     def is_complete(self) -> bool:
-        return self.answered_count >= self.question_count
+        return self.answered_count >= self.config.question_count
 
     def record_answer(
         self,
