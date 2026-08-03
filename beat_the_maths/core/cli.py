@@ -4,6 +4,7 @@ from .io.inputs.exercise_response import input_response
 from .io.inputs.parameters import input_params
 from .io.outputs.game import print_failure_msg, print_success_msg
 from .io.outputs.title import print_title
+from .services.quiz_engine.answer_result import AnswerResult
 from .services.quiz_engine.problem_generator import problem_generator
 
 # colorama is optional, but helps with Windows terminal compatibility.
@@ -35,12 +36,18 @@ def main():
 
         response, duration = input_response(problem.question, i + 1)
 
-        if problem.is_correct(response):
-            print_success_msg(duration)
+        result = AnswerResult(
+            problem=problem,
+            response=response,
+            duration=duration,
+        )
+
+        if result.is_correct:
+            print_success_msg(result.duration)
             print()  # Blank line for better readability
             score += 1
         else:
-            print_failure_msg(problem.solution, duration)
+            print_failure_msg(result.problem.solution, result.duration)
             print()  # Blank lune for better readability
 
     print(f"You finish the game with {score} points.")
