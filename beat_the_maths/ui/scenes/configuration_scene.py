@@ -2,6 +2,8 @@ from typing import TYPE_CHECKING
 
 import pygame
 
+from ...core.services.quiz_engine.quiz_config import Difficulty, Operation
+from ..components.button import Button
 from .scene import Scene
 
 if TYPE_CHECKING:
@@ -10,7 +12,6 @@ if TYPE_CHECKING:
 BACKGROUND_COLOR = (14, 20, 36)
 TITLE_COLOR = (245, 247, 255)
 SECTION_COLOR = (88, 166, 255)
-TEXT_COLOR = (203, 213, 225)
 HELP_COLOR = (120, 132, 153)
 
 
@@ -20,14 +21,61 @@ class ConfigurationScene(Scene):
 
         self.title_font = pygame.font.Font(None, 68)
         self.section_font = pygame.font.Font(None, 42)
-        self.text_font = pygame.font.Font(None, 34)
+        self.button_font = pygame.font.Font(None, 34)
         self.help_font = pygame.font.Font(None, 28)
+
+        self.selected_operation: Operation | None = None
+        self.selected_difficulty: Difficulty | None = None
+
+        self.operation_buttons = {
+            Operation.ADDITION: Button(
+                "Addition", (130, 220, 240, 64), self.button_font
+            ),
+            Operation.SUBTRACTION: Button(
+                "Soustraction", (390, 220, 240, 64), self.button_font
+            ),
+            Operation.MULTIPLICATION: Button(
+                "Multiplication", (650, 220, 240, 64), self.button_font
+            ),
+            Operation.DIVISION: Button(
+                "Division", (910, 220, 240, 64), self.button_font
+            ),
+        }
+
+        self.difficulty_buttons = {
+            Difficulty.EASY: Button(
+                "Facile",
+                (250, 420, 240, 64),
+                self.button_font,
+            ),
+            Difficulty.MEDIUM: Button(
+                "Moyenne",
+                (520, 420, 240, 64),
+                self.button_font,
+            ),
+            Difficulty.HARD: Button(
+                "Difficile",
+                (790, 420, 240, 64),
+                self.button_font,
+            ),
+        }
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
             from .title_scene import TitleScene
 
             self.app.change_scene(TitleScene(self.app))
+            return
+
+        for operation, button in self.operation_buttons.items():
+            if button.handle_event(event):
+                self.selected_operation = operation
+                return
+
+        for difficulty, button in self.difficulty_buttons.items():
+            if button.handle_event(event):
+                self.selected_difficulty = difficulty
+                return
 
     def update(self, _delta_time: float) -> None:
         pass
@@ -43,43 +91,48 @@ class ConfigurationScene(Scene):
             self.title_font,
             TITLE_COLOR,
             center_x,
-            90,
+            75,
         )
 
         self._draw_centered_text(
             surface,
-            "Opération",
+            "Choisis une opération",
             self.section_font,
             SECTION_COLOR,
             center_x,
-            210,
+            165,
         )
+
+        for operation, button in self.operation_buttons.items():
+            button.draw(
+                surface,
+                selected=operation is self.selected_operation,
+            )
 
         self._draw_centered_text(
             surface,
-            "Addition  •  Soustraction  •  Multiplication  •  Division",
-            self.text_font,
-            TEXT_COLOR,
-            center_x,
-            265,
-        )
-
-        self._draw_centered_text(
-            surface,
-            "Difficulté",
+            "Choisis une difficulté",
             self.section_font,
             SECTION_COLOR,
             center_x,
-            390,
+            365,
         )
+
+        for difficulty, button in self.difficulty_buttons.items():
+            button.draw(surface, selected=difficulty is self.selected_difficulty)
+
+        if self.selected_operation is not None and self.selected_difficulty is not None:
+            help_text = "Configuration prête !"
+        else:
+            help_text = "Sélectionne une opération et une difficulté"
 
         self._draw_centered_text(
             surface,
-            "Facile  •  Moyenne  •  Difficile",
-            self.text_font,
-            TEXT_COLOR,
+            help_text,
+            self.help_font,
+            HELP_COLOR,
             center_x,
-            445,
+            570,
         )
 
         self._draw_centered_text(
@@ -88,7 +141,7 @@ class ConfigurationScene(Scene):
             self.help_font,
             HELP_COLOR,
             center_x,
-            650,
+            660,
         )
 
     @staticmethod
