@@ -14,6 +14,9 @@ authors = [
 ]
 dependencies = []
 
+[project.optional-dependencies]
+test = ["pytest"]
+
 [project.scripts]
 beat-the-maths = "beat_the_maths.__main__:main"
 
@@ -22,3 +25,6 @@ include = ["beat_the_maths*"]
 
 [tool.setuptools.package-data]
 beat_the_maths = ["assets/*.ico"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
