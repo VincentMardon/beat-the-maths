@@ -21,3 +21,4 @@ Thumbs.db
 # Personal files
 personal_docs/
 note.txt
+.packaging-tests/
