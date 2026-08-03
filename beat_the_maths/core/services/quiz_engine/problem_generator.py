@@ -27,7 +27,7 @@ def problem_generator(difficulty_level: int = 1, exercise_type: int = 1) -> Prob
     Generate a simple math problem based on difficulty and type.
     :param difficulty: Difficulty level (1, 2, or 3)
     :param exercice_type: Type of exercise (1: addition, 2: subtraction, 3: multiplication, 4: division)
-    :return: A tuple containing the problem as a string and the solution as an number.
+    :return: The generated problem.
     """
 
     a = _rand_in_level(difficulty_level)

@@ -11,7 +11,7 @@ def test_accepts_correct_answer(response):
 
 
 @pytest.mark.parametrize("response", ["4", "-5", "+5", "five", ""])
-def test_rejects_incorrest_or_invalid_answer(response):
+def test_rejects_incorrect_or_invalid_answer(response):
     problem = Problem(question="2 + 3 = ? ", solution=5)
 
     assert not problem.is_correct(response)
