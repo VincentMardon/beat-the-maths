@@ -25,13 +25,13 @@ def test_generates_expected_problem(
         problem_generator, "_rand_in_level", lambda _level: next(numbers)
     )
 
-    question, answer = problem_generator.problem_generator(
+    problem = problem_generator.problem_generator(
         difficulty_level=1,
         exercise_type=exercise_type,
     )
 
-    assert question == expected_question
-    assert answer == expected_answer
+    assert problem.question == expected_question
+    assert problem.solution == expected_answer
 
 
 def test_subtraction_never_produces_negative_answer(monkeypatch):
@@ -43,13 +43,13 @@ def test_subtraction_never_produces_negative_answer(monkeypatch):
         lambda _level: next(numbers),
     )
 
-    question, answer = problem_generator.problem_generator(
+    problem = problem_generator.problem_generator(
         difficulty_level=1,
         exercise_type=2,
     )
 
-    assert question == "7 - 2 = ? "
-    assert answer == 5
+    assert problem.question == "7 - 2 = ? "
+    assert problem.solution == 5
 
 
 def test_unknown_exercise_type_falls_back_to_addition(monkeypatch):
@@ -59,10 +59,10 @@ def test_unknown_exercise_type_falls_back_to_addition(monkeypatch):
         problem_generator, "_rand_in_level", lambda _level: next(numbers)
     )
 
-    question, answer = problem_generator.problem_generator(
+    problem = problem_generator.problem_generator(
         difficulty_level=1,
         exercise_type=99,
     )
 
-    assert question == "2 + 3 = ? "
-    assert answer == 5
+    assert problem.question == "2 + 3 = ? "
+    assert problem.solution == 5

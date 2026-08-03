@@ -1,6 +1,7 @@
 import operator as op
 import random
-from typing import Tuple
+
+from .problems.problem import Problem
 
 difficulty_levels = {
     1: 10,  # numbers between 1 and 10
@@ -21,9 +22,7 @@ def _rand_in_level(level: int) -> int:
     return random.randint(1, hi)
 
 
-def problem_generator(
-    difficulty_level: int = 1, exercise_type: int = 1
-) -> Tuple[str, int]:
+def problem_generator(difficulty_level: int = 1, exercise_type: int = 1) -> Problem:
     """
     Generate a simple math problem based on difficulty and type.
     :param difficulty: Difficulty level (1, 2, or 3)
@@ -47,11 +46,4 @@ def problem_generator(
     question = f"{a} {sign} {b} = ? "
     answer = func(a, b)
 
-    return question, answer
-
-
-# considering classing this into a ProblemGenerator class if more features are added later (eg. equations, fractions, scientist notation, etc).
-if __name__ == "__main__":
-    for lvl, etype in [(1, 1), (2, 2), (3, 3), (2, 4), (1, 99)]:
-        q, ans = problem_generator(lvl, etype)
-        print(q, ans)
+    return Problem(question=question, solution=answer)
