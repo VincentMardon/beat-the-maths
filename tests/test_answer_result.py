@@ -2,7 +2,7 @@ from beat_the_maths.core.services.quiz_engine.answer_result import AnswerResult
 from beat_the_maths.core.services.quiz_engine.problems.problem import Problem
 
 
-def test_corect_answer_result():
+def test_correct_answer_result():
     problem = Problem(question="2 + 3 = ? ", solution=5)
 
     result = AnswerResult(
