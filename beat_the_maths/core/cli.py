@@ -4,7 +4,7 @@ from .io.inputs.exercise_response import input_response
 from .io.inputs.parameters import input_params
 from .io.outputs.game import print_failure_msg, print_success_msg
 from .io.outputs.title import print_title
-from .services.quiz_engine.answer_result import AnswerResult
+from .services.quiz_engine.game_session import GameSession
 from .services.quiz_engine.problem_generator import problem_generator
 
 # colorama is optional, but helps with Windows terminal compatibility.
@@ -25,18 +25,25 @@ def main():
     # Get user preferences for difficulty level and exercise type
     etype, level = input_params()
 
+    session = GameSession(
+        difficulty_level=level,
+        exercise_type=etype,
+    )
+
     print()  # Blank line for better readability
 
-    score = 0
-    for i in range(10):
+    while not session.is_complete:
         problem = problem_generator(
-            difficulty_level=level,
-            exercise_type=etype,
+            difficulty_level=session.difficulty_level,
+            exercise_type=session.exercise_type,
         )
 
-        response, duration = input_response(problem.question, i + 1)
+        response, duration = input_response(
+            problem.question,
+            session.next_question_number,
+        )
 
-        result = AnswerResult(
+        result = session.record_answer(
             problem=problem,
             response=response,
             duration=duration,
@@ -45,12 +52,11 @@ def main():
         if result.is_correct:
             print_success_msg(result.duration)
             print()  # Blank line for better readability
-            score += 1
         else:
             print_failure_msg(result.problem.solution, result.duration)
-            print()  # Blank lune for better readability
+            print()  # Blank line for better readability
 
-    print(f"You finish the game with {score} points.")
+    print(f"You finish the game with {session.score} points.")
 
     time.sleep(2)
 
