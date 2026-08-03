@@ -1,10 +1,10 @@
 import time
-from .services.quiz_engine.problem_generator import problem_generator
 
-from .io.inputs.parameters import input_params
 from .io.inputs.exercise_response import input_response
+from .io.inputs.parameters import input_params
+from .io.outputs.game import print_failure_msg, print_success_msg
 from .io.outputs.title import print_title
-from .io.outputs.game import print_success_msg, print_failure_msg
+from .services.quiz_engine.problem_generator import problem_generator
 
 # colorama is optional, but helps with Windows terminal compatibility.
 # Considering moves this import inside a setup.py file or a main guard.

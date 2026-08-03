@@ -1,7 +1,6 @@
+from ....data.texts.title import INTRO, TITLE
+from ...styles.tokens import FG, STYLES
 from ...utils.format_text import format_text
-from ...styles.tokens import STYLES, FG
-
-from ....data.texts.title import TITLE, INTRO
 
 
 # Function to print formated title

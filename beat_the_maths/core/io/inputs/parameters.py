@@ -1,6 +1,5 @@
-from ..outputs.game import print_invalid_input_msg
-
 from ....data.texts.parameters import DIFFICULTY_LEVEL, EXERCISE_TYPE
+from ..outputs.game import print_invalid_input_msg
 
 
 # Function to get user input for difficulty level and exercise type

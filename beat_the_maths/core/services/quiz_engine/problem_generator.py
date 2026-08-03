@@ -1,6 +1,5 @@
-import random
 import operator as op
-
+import random
 from typing import Tuple
 
 difficulty_levels = {

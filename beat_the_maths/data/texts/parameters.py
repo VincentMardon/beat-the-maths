@@ -1,11 +1,11 @@
-DIFFICULTY_LEVEL = f"""
+DIFFICULTY_LEVEL = """
 Select the difficulty level you want to practice:
 1. Easy (numbers between 1 and 10)
 2. Medium (numbers between 1 and 100)
 3. Hard (numbers between 1 and 1000)
 Enter the number corresponding to your choice (1-3): """
 
-EXERCISE_TYPE = f"""
+EXERCISE_TYPE = """
 Select the type of exercise you want to practice:
 1. Addition (+)
 2. Subtraction (-)

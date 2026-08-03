@@ -1,5 +1,5 @@
+from ...styles.tokens import FG, STYLES
 from ...utils.format_text import format_text
-from ...styles.tokens import STYLES, FG
 
 
 # Function to print an invalid input message
