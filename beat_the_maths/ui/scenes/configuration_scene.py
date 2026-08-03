@@ -2,7 +2,11 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from ...core.services.quiz_engine.quiz_config import Difficulty, Operation
+from ...core.services.quiz_engine.quiz_config import (
+    Difficulty,
+    Operation,
+    QuizConfig,
+)
 from ..components.button import Button
 from .scene import Scene
 
@@ -60,6 +64,13 @@ class ConfigurationScene(Scene):
             ),
         }
 
+        self.start_button = Button(
+            "Commencer",
+            (480, 550, 320, 64),
+            self.button_font,
+            enabled=False,
+        )
+
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
             from .title_scene import TitleScene
@@ -77,8 +88,27 @@ class ConfigurationScene(Scene):
                 self.selected_difficulty = difficulty
                 return
 
+        if self.start_button.handle_event(event):
+            assert self.selected_operation is not None
+            assert self.selected_difficulty is not None
+
+            from .quiz_scene import QuizScene
+
+            config = QuizConfig(
+                difficulty=self.selected_difficulty, operation=self.selected_operation
+            )
+
+            self.app.change_scene(
+                QuizScene(
+                    app=self.app,
+                    config=config,
+                )
+            )
+
     def update(self, _delta_time: float) -> None:
-        pass
+        self.start_button.enabled = (
+            self.selected_operation is not None and self.selected_difficulty is not None
+        )
 
     def draw(self, surface: pygame.Surface) -> None:
         surface.fill(BACKGROUND_COLOR)
@@ -132,8 +162,10 @@ class ConfigurationScene(Scene):
             self.help_font,
             HELP_COLOR,
             center_x,
-            570,
+            515,
         )
+
+        self.start_button.draw(surface)
 
         self._draw_centered_text(
             surface,
