@@ -2,6 +2,7 @@ from ..outputs.game import print_invalid_input_msg
 
 from ....data.texts.parameters import DIFFICULTY_LEVEL, EXERCISE_TYPE
 
+
 # Function to get user input for difficulty level and exercise type
 def input_params() -> tuple[int, int]:
     while True:
@@ -14,7 +15,7 @@ def input_params() -> tuple[int, int]:
                 raise ValueError
         except ValueError:
             print_invalid_input_msg(maximum=len(etype_list))
-        
+
     while True:
         level_list = [1, 2, 3]
         try:

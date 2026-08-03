@@ -11,10 +11,12 @@ from .io.outputs.game import print_success_msg, print_failure_msg
 # See "Raccourcis claviers émoticones" ChatGPT conversation for more details.
 try:
     from colorama import just_fix_windows_console
+
     just_fix_windows_console()
 except ImportError:
     print("colorama not installed, proceeding without it.")
     pass
+
 
 def main():
     print_title()
@@ -26,22 +28,24 @@ def main():
 
     score = 0
     for i in range(10):
-        problem, solution = problem_generator(difficulty_level=level, exercise_type=etype)
+        problem, solution = problem_generator(
+            difficulty_level=level, exercise_type=etype
+        )
 
-        response, duration = input_response(problem, i+1)
+        response, duration = input_response(problem, i + 1)
 
         if response.isdigit() and int(response) == solution:
             print_success_msg(duration)
-            print() # Blank line for better readability
+            print()  # Blank line for better readability
             score += 1
         else:
             print_failure_msg(solution, duration)
-            print() # Blank lune for better readability
+            print()  # Blank lune for better readability
 
-    print(f'You finish the game with {score} points.')
+    print(f"You finish the game with {score} points.")
 
     time.sleep(2)
 
-    print('Thank you so much for playing my game!')
-    
+    print("Thank you so much for playing my game!")
+
     time.sleep(5)

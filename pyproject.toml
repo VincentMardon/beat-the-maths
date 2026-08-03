@@ -15,7 +15,10 @@ authors = [
 dependencies = []
 
 [project.optional-dependencies]
-test = ["pytest"]
+dev = [
+    "pytest",
+    "ruff",
+]
 
 [project.scripts]
 beat-the-maths = "beat_the_maths.__main__:main"
@@ -28,3 +31,12 @@ beat_the_maths = ["assets/*.ico"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
