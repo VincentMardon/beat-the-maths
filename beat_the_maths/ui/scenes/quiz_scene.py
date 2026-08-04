@@ -82,9 +82,7 @@ class QuizScene(Scene):
         self.feedback_result = None
         self.question_started_at = perf_counter()
 
-    def draw(self, surface: pygame.Surface) -> None:
-        surface.fill(THEME.background)
-
+    def draw_content(self, surface: pygame.Surface) -> None:
         center_x = surface.get_rect().centerx
 
         progress = (

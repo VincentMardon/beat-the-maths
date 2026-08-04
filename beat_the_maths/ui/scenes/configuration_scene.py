@@ -107,9 +107,7 @@ class ConfigurationScene(Scene):
             self.selected_operation is not None and self.selected_difficulty is not None
         )
 
-    def draw(self, surface: pygame.Surface) -> None:
-        surface.fill(THEME.background)
-
+    def draw_content(self, surface: pygame.Surface) -> None:
         center_x = surface.get_rect().centerx
 
         draw_text(

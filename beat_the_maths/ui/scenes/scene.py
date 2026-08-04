@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING
 
 import pygame
 
+from ..theme import THEME
+
 if TYPE_CHECKING:
     from ..pygame_app import PygameApp
 
@@ -15,10 +17,13 @@ class Scene(ABC):
     def handle_event(self, event: pygame.event.Event) -> None:
         pass
 
-    @abstractmethod
     def update(self, delta_time: float) -> None:
         pass
 
-    @abstractmethod
     def draw(self, surface: pygame.Surface) -> None:
+        surface.fill(THEME.background)
+        self.draw_content(surface)
+
+    @abstractmethod
+    def draw_content(self, surface: pygame.Surface) -> None:
         pass

@@ -30,9 +30,7 @@ class TitleScene(Scene):
     def update(self, delta_time: float) -> None:
         self.elapsed_time += delta_time
 
-    def draw(self, surface: pygame.Surface) -> None:
-        surface.fill(THEME.background)
-
+    def draw_content(self, surface: pygame.Surface) -> None:
         center_x = surface.get_rect().centerx
         center_y = surface.get_rect().centery
 

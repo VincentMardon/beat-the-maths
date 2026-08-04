@@ -38,12 +38,7 @@ class ResultsScene(Scene):
 
             self.app.change_scene(TitleScene(self.app))
 
-    def update(self, _delta_time: float) -> None:
-        pass
-
-    def draw(self, surface: pygame.Surface) -> None:
-        surface.fill(THEME.background)
-
+    def draw_content(self, surface: pygame.Surface) -> None:
         center_x = surface.get_rect().centerx
 
         draw_text(
