@@ -48,6 +48,7 @@ def test_session_records_answers_and_calculates_score():
     assert session.answered_count == 2
     assert session.score == 1
     assert session.is_complete
+    assert session.next_question_number == 2
 
 
 def test_session_rejects_answer_after_completion():

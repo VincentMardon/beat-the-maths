@@ -28,7 +28,10 @@ class GameSession:
 
     @property
     def next_question_number(self) -> int:
-        return self.answered_count + 1
+        return min(
+            self.answered_count + 1,
+            self.config.question_count,
+        )
 
     @property
     def is_complete(self) -> bool:
