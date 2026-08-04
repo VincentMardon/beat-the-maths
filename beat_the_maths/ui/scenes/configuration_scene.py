@@ -8,25 +8,22 @@ from ...core.services.quiz_engine.quiz_config import (
     QuizConfig,
 )
 from ..components.button import Button
+from ..drawing import draw_text
+from ..theme import THEME, get_font
 from .scene import Scene
 
 if TYPE_CHECKING:
     from ..pygame_app import PygameApp
-
-BACKGROUND_COLOR = (14, 20, 36)
-TITLE_COLOR = (245, 247, 255)
-SECTION_COLOR = (88, 166, 255)
-HELP_COLOR = (120, 132, 153)
 
 
 class ConfigurationScene(Scene):
     def __init__(self, app: "PygameApp") -> None:
         super().__init__(app)
 
-        self.title_font = pygame.font.Font(None, 68)
-        self.section_font = pygame.font.Font(None, 42)
-        self.button_font = pygame.font.Font(None, 34)
-        self.help_font = pygame.font.Font(None, 28)
+        self.title_font = get_font(68)
+        self.section_font = get_font(42)
+        self.button_font = get_font(34)
+        self.help_font = get_font(28)
 
         self.selected_operation: Operation | None = None
         self.selected_difficulty: Difficulty | None = None
@@ -111,26 +108,24 @@ class ConfigurationScene(Scene):
         )
 
     def draw(self, surface: pygame.Surface) -> None:
-        surface.fill(BACKGROUND_COLOR)
+        surface.fill(THEME.background)
 
         center_x = surface.get_rect().centerx
 
-        self._draw_centered_text(
+        draw_text(
             surface,
             "CONFIGURE TA PARTIE",
             self.title_font,
-            TITLE_COLOR,
-            center_x,
-            75,
+            THEME.heading,
+            center=(center_x, 75),
         )
 
-        self._draw_centered_text(
+        draw_text(
             surface,
             "Choisis une opération",
             self.section_font,
-            SECTION_COLOR,
-            center_x,
-            165,
+            THEME.accent,
+            center=(center_x, 165),
         )
 
         for operation, button in self.operation_buttons.items():
@@ -139,13 +134,12 @@ class ConfigurationScene(Scene):
                 selected=operation is self.selected_operation,
             )
 
-        self._draw_centered_text(
+        draw_text(
             surface,
             "Choisis une difficulté",
             self.section_font,
-            SECTION_COLOR,
-            center_x,
-            365,
+            THEME.accent,
+            center=(center_x, 365),
         )
 
         for difficulty, button in self.difficulty_buttons.items():
@@ -156,35 +150,20 @@ class ConfigurationScene(Scene):
         else:
             help_text = "Sélectionne une opération et une difficulté"
 
-        self._draw_centered_text(
+        draw_text(
             surface,
             help_text,
             self.help_font,
-            HELP_COLOR,
-            center_x,
-            515,
+            THEME.text_muted,
+            center=(center_x, 515),
         )
 
         self.start_button.draw(surface)
 
-        self._draw_centered_text(
+        draw_text(
             surface,
             "Retour arrière : revenir au titre    •    Échap : quitter",
             self.help_font,
-            HELP_COLOR,
-            center_x,
-            660,
+            THEME.text_muted,
+            center=(center_x, 660),
         )
-
-    @staticmethod
-    def _draw_centered_text(
-        surface: pygame.Surface,
-        text: str,
-        font: pygame.font.Font,
-        color: tuple[int, int, int],
-        center_x: int,
-        center_y: int,
-    ) -> None:
-        rendered_text = font.render(text, True, color)
-        text_rect = rendered_text.get_rect(center=(center_x, center_y))
-        surface.blit(rendered_text, text_rect)

@@ -1,10 +1,7 @@
 import pygame
 
-BACKGROUND_COLOR = (15, 23, 42)
-ACTIVE_BORDER_COLOR = (96, 165, 250)
-DISABLED_BORDER_COLOR = (71, 85, 105)
-TEXT_COLOR = (241, 245, 249)
-PLACEHOLDER_COLOR = (100, 116, 139)
+from ..drawing import draw_text
+from ..theme import THEME
 
 
 class TextInput:
@@ -40,11 +37,11 @@ class TextInput:
         self.text = ""
 
     def draw(self, surface: pygame.Surface) -> None:
-        border_color = ACTIVE_BORDER_COLOR if self.enabled else DISABLED_BORDER_COLOR
+        border_color = THEME.border_hover if self.enabled else THEME.border
 
         pygame.draw.rect(
             surface,
-            BACKGROUND_COLOR,
+            THEME.input_background,
             self.rect,
             border_radius=14,
         )
@@ -59,19 +56,15 @@ class TextInput:
 
         if self.text:
             displayed_text = self.text
-            text_color = TEXT_COLOR
+            text_color = THEME.text_primary
         else:
             displayed_text = self.placeholder
-            text_color = PLACEHOLDER_COLOR
+            text_color = THEME.text_disabled
 
-        rendered_text = self.font.render(
+        draw_text(
+            surface,
             displayed_text,
-            True,
+            self.font,
             text_color,
-        )
-
-        text_rect = rendered_text.get_rect(
             center=self.rect.center,
         )
-
-        surface.blit(rendered_text, text_rect)

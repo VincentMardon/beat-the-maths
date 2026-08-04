@@ -7,18 +7,12 @@ from ...core.services.quiz_engine.answer_result import AnswerResult
 from ...core.services.quiz_engine.quiz_config import QuizConfig
 from ...core.services.quiz_engine.quiz_engine import QuizEngine
 from ..components.text_input import TextInput
+from ..drawing import draw_text
+from ..theme import THEME, get_font
 from .scene import Scene
 
 if TYPE_CHECKING:
     from ..pygame_app import PygameApp
-
-BACKGROUND_COLOR = (14, 20, 36)
-TITLE_COLOR = (245, 247, 255)
-QUESTION_COLOR = (88, 166, 255)
-TEXT_COLOR = (203, 213, 225)
-HELP_COLOR = (120, 132, 153)
-SUCCESS_COLOR = (74, 222, 128)
-FAILURE_COLOR = (248, 113, 113)
 
 FEEDBACK_DURATION = 1.5
 
@@ -34,11 +28,11 @@ class QuizScene(Scene):
         self.engine = QuizEngine(config=config)
         self.problem = self.engine.next_problem()
 
-        self.progress_font = pygame.font.Font(None, 34)
-        self.question_font = pygame.font.Font(None, 92)
-        self.answer_font = pygame.font.Font(None, 54)
-        self.feedback_font = pygame.font.Font(None, 42)
-        self.help_font = pygame.font.Font(None, 28)
+        self.progress_font = get_font(34)
+        self.question_font = get_font(92)
+        self.answer_font = get_font(54)
+        self.feedback_font = get_font(42)
+        self.help_font = get_font(28)
 
         self.answer_input = TextInput(
             rect=(440, 390, 400, 80),
@@ -89,7 +83,7 @@ class QuizScene(Scene):
         self.question_started_at = perf_counter()
 
     def draw(self, surface: pygame.Surface) -> None:
-        surface.fill(BACKGROUND_COLOR)
+        surface.fill(THEME.background)
 
         center_x = surface.get_rect().centerx
 
@@ -98,67 +92,48 @@ class QuizScene(Scene):
             f" / {self.engine.session.config.question_count}"
         )
 
-        self._draw_centered_text(
+        draw_text(
             surface,
             progress,
             self.progress_font,
-            TEXT_COLOR,
-            center_x,
-            90,
+            THEME.text_secondary,
+            center=(center_x, 90),
         )
 
-        self._draw_centered_text(
+        draw_text(
             surface,
             self.problem.question,
             self.question_font,
-            QUESTION_COLOR,
-            center_x,
-            270,
+            THEME.accent,
+            center=(center_x, 270),
         )
 
         self.answer_input.draw(surface)
 
         if self.feedback_result is None:
             feedback_text = "Écris ta réponse puis appuie sur Entrée"
-            feedback_color = HELP_COLOR
+            feedback_color = THEME.text_muted
         elif self.feedback_result.is_correct:
             feedback_text = f"Correct ! {self.feedback_result.duration:.2f} s"
-            feedback_color = SUCCESS_COLOR
+            feedback_color = THEME.success
         else:
             feedback_text = (
                 f"Raté ! La réponse était {self.feedback_result.problem.solution}."
             )
-            feedback_color = FAILURE_COLOR
+            feedback_color = THEME.failure
 
-        self._draw_centered_text(
+        draw_text(
             surface,
             feedback_text,
             self.feedback_font,
             feedback_color,
-            center_x,
-            535,
+            center=(center_x, 535),
         )
 
-        self._draw_centered_text(
+        draw_text(
             surface,
             "Échap : quitter",
             self.help_font,
-            HELP_COLOR,
-            center_x,
-            670,
+            THEME.text_muted,
+            center=(center_x, 670),
         )
-
-    @staticmethod
-    def _draw_centered_text(
-        surface: pygame.Surface,
-        text: str,
-        font: pygame.font.Font,
-        color: tuple[int, int, int],
-        center_x: int,
-        center_y: int,
-    ) -> None:
-        rendered_text = font.render(text, True, color)
-        text_rect = rendered_text.get_rect(
-            center=(center_x, center_y),
-        )
-        surface.blit(rendered_text, text_rect)

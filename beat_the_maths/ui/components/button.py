@@ -1,17 +1,7 @@
 import pygame
 
-DEFAULT_COLOR = (30, 41, 59)
-HOVER_COLOR = (45, 65, 95)
-SELECTED_COLOR = (37, 99, 235)
-DISABLED_COLOR = (25, 32, 45)
-
-DEFAULT_BORDER_COLOR = (71, 85, 105)
-HOVER_BORDER_COLOR = (96, 165, 250)
-SELECTED_BORDER_COLOR = (147, 197, 253)
-DISABLED_BORDER_COLOR = (51, 65, 85)
-
-TEXT_COLOR = (241, 245, 249)
-DISABLED_TEXT_COLOR = (100, 116, 139)
+from ..drawing import draw_text
+from ..theme import THEME
 
 
 class Button:
@@ -43,21 +33,21 @@ class Button:
         hovered = self.enabled and self.rect.collidepoint(pygame.mouse.get_pos())
 
         if not self.enabled:
-            background_color = DISABLED_COLOR
-            border_color = DISABLED_BORDER_COLOR
-            text_color = DISABLED_TEXT_COLOR
+            background_color = THEME.surface_disabled
+            border_color = THEME.border_disabled
+            text_color = THEME.text_disabled
         elif selected:
-            background_color = SELECTED_COLOR
-            border_color = SELECTED_BORDER_COLOR
-            text_color = TEXT_COLOR
+            background_color = THEME.surface_selected
+            border_color = THEME.border_selected
+            text_color = THEME.text_primary
         elif hovered:
-            background_color = HOVER_COLOR
-            border_color = HOVER_BORDER_COLOR
-            text_color = TEXT_COLOR
+            background_color = THEME.surface_hover
+            border_color = THEME.border_hover
+            text_color = THEME.text_primary
         else:
-            background_color = DEFAULT_COLOR
-            border_color = DEFAULT_BORDER_COLOR
-            text_color = TEXT_COLOR
+            background_color = THEME.surface
+            border_color = THEME.border
+            text_color = THEME.text_primary
 
         pygame.draw.rect(
             surface,
@@ -74,12 +64,10 @@ class Button:
             border_radius=14,
         )
 
-        rendered_text = self.font.render(
+        draw_text(
+            surface,
             self.text,
-            True,
+            self.font,
             text_color,
+            center=self.rect.center,
         )
-
-        text_rect = rendered_text.get_rect(center=self.rect.center)
-
-        surface.blit(rendered_text, text_rect)
