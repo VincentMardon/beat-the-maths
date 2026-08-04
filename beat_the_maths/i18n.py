@@ -44,6 +44,10 @@ class Text(StrEnum):
     RESULTS_REPLAY = auto()
     RESULTS_BACK_TO_TITLE = auto()
 
+    ACHIEVEMENT_UNLOCKED = auto()
+    ACHIEVEMENT_ONE_QUESTION_NAME = auto()
+    ACHIEVEMENT_ONE_QUESTION_DESCRIPTION = auto()
+
 
 type Catalog = dict[Text, str]
 
@@ -59,7 +63,7 @@ CATALOGS: dict[Language, Catalog] = {
         Text.OPERATION_PROMPT: "Choisis une opération",
         Text.DIFFICULTY_PROMPT: "Choisis une difficulté",
         Text.QUESTION_COUNT_PROMPT: "Nombre de questions",
-        Text.QUESTION_COUNT_CUSTOM: "Personnlaisé",
+        Text.QUESTION_COUNT_CUSTOM: "Personnlisé",
         Text.QUESTION_COUNT_INVALID: (
             "Le nombre de questions doit être supérieur à zéro"
         ),
@@ -89,6 +93,11 @@ CATALOGS: dict[Language, Catalog] = {
         Text.RESULTS_BACK_TO_TITLE: (
             "Retour arrière : écran titre    •    Échap : quitter"
         ),
+        Text.ACHIEVEMENT_UNLOCKED: "SUCCÈS DÉBLOQUÉ !",
+        Text.ACHIEVEMENT_ONE_QUESTION_NAME: "Service minimum",
+        Text.ACHIEVEMENT_ONE_QUESTION_DESCRIPTION: (
+            "Termine une partie d'une seule question."
+        ),
     },
     Language.ENGLISH: {
         Text.TITLE_SUBTITLE: ("The serious game to heal your maths pain."),
@@ -103,7 +112,7 @@ CATALOGS: dict[Language, Catalog] = {
         Text.QUESTION_COUNT_PROMPT: "Number of questions",
         Text.QUESTION_COUNT_CUSTOM: "Custom",
         Text.QUESTION_COUNT_INVALID: (
-            "The number of questions must be greqter than zero"
+            "The number of questions must be greater than zero"
         ),
         Text.OPERATION_ADDITION: "Addition",
         Text.OPERATION_SUBTRACTION: "Subtraction",
@@ -127,6 +136,9 @@ CATALOGS: dict[Language, Catalog] = {
         Text.RESULTS_TITLE: "QUIZ COMPLETE",
         Text.RESULTS_REPLAY: "Enter: play again",
         Text.RESULTS_BACK_TO_TITLE: ("Backspace: title screen    •    Esc: quit"),
+        Text.ACHIEVEMENT_UNLOCKED: "ACHIEVEMENT UNLOCKED!",
+        Text.ACHIEVEMENT_ONE_QUESTION_NAME: "Bare minimum",
+        Text.ACHIEVEMENT_ONE_QUESTION_DESCRIPTION: ("Complete a one-question game."),
     },
 }
 

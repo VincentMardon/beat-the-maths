@@ -31,7 +31,10 @@ beat-the-maths-gui = "beat_the_maths.ui.pygame_app:main"
 include = ["beat_the_maths*"]
 
 [tool.setuptools.package-data]
-beat_the_maths = ["assets/*.ico"]
+beat_the_maths = [
+    "assets/*.ico",
+    "assets/badges/*.png",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
