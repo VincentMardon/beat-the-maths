@@ -87,9 +87,7 @@ class ConfigurationScene(Scene):
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
-            from .title_scene import TitleScene
-
-            self.app.change_scene(TitleScene(self.app))
+            self.app.show_title()
             return
 
         if self.operation_group.handle_event(event):
@@ -105,19 +103,12 @@ class ConfigurationScene(Scene):
             assert operation is not None
             assert difficulty is not None
 
-            from .quiz_scene import QuizScene
-
             config = QuizConfig(
                 difficulty=difficulty,
                 operation=operation,
             )
 
-            self.app.change_scene(
-                QuizScene(
-                    app=self.app,
-                    config=config,
-                )
-            )
+            self.app.start_quiz(config)
 
     def update(self, _delta_time: float) -> None:
         self.start_button.enabled = (

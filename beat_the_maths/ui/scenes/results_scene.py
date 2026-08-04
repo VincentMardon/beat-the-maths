@@ -30,13 +30,9 @@ class ResultsScene(Scene):
             return
 
         if event.key == pygame.K_RETURN:
-            from .configuration_scene import ConfigurationScene
-
-            self.app.change_scene(ConfigurationScene(self.app))
+            self.app.show_configuration()
         elif event.key == pygame.K_BACKSPACE:
-            from .title_scene import TitleScene
-
-            self.app.change_scene(TitleScene(self.app))
+            self.app.show_title()
 
     def draw_content(self, surface: pygame.Surface) -> None:
         center_x = surface.get_rect().centerx

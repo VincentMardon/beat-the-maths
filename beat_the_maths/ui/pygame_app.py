@@ -1,5 +1,10 @@
 import pygame
 
+from ..core.services.quiz_engine.game_session import GameSession
+from ..core.services.quiz_engine.quiz_config import QuizConfig
+from .scenes.configuration_scene import ConfigurationScene
+from .scenes.quiz_scene import QuizScene
+from .scenes.results_scene import ResultsScene
 from .scenes.scene import Scene
 from .scenes.title_scene import TitleScene
 
@@ -42,7 +47,29 @@ class PygameApp:
         self.scene.draw(self.screen)
         pygame.display.flip()
 
-    def change_scene(self, scene: Scene) -> None:
+    def show_title(self) -> None:
+        self._change_scene(TitleScene(self))
+
+    def show_configuration(self) -> None:
+        self._change_scene(ConfigurationScene(self))
+
+    def start_quiz(self, config: QuizConfig) -> None:
+        self._change_scene(
+            QuizScene(
+                app=self,
+                config=config,
+            )
+        )
+
+    def show_results(self, session: GameSession) -> None:
+        self._change_scene(
+            ResultsScene(
+                app=self,
+                session=session,
+            )
+        )
+
+    def _change_scene(self, scene: Scene) -> None:
         self.scene = scene
 
 

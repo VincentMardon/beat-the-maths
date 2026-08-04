@@ -32,10 +32,7 @@ def test_second_click_replaces_previous_selection():
     subtraction_button = create_button()
 
     group = ChoiceGroup(
-        {
-            "addition": addition_button,
-            "subtraction": subtraction_button
-        }
+        {"addition": addition_button, "subtraction": subtraction_button}
     )
 
     group.handle_event(event)

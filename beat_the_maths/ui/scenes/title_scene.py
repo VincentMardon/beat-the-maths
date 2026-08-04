@@ -23,9 +23,7 @@ class TitleScene(Scene):
 
     def handle_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-            from .configuration_scene import ConfigurationScene
-
-            self.app.change_scene(ConfigurationScene(self.app))
+            self.app.show_configuration()
 
     def update(self, delta_time: float) -> None:
         self.elapsed_time += delta_time

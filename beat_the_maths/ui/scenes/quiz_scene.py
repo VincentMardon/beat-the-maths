@@ -69,11 +69,7 @@ class QuizScene(Scene):
             return
 
         if self.engine.session.is_complete:
-            from .results_scene import ResultsScene
-
-            self.app.change_scene(
-                ResultsScene(app=self.app, session=self.engine.session)
-            )
+            self.app.show_results(self.engine.session)
             return
 
         self.problem = self.engine.next_problem()
