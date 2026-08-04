@@ -8,7 +8,9 @@ from ...core.services.quiz_engine.quiz_config import (
     QuizConfig,
 )
 from ..components.button import Button
+from ..components.choice_group import ChoiceGroup
 from ..drawing import draw_text
+from ..layout import centered_row
 from ..theme import THEME, get_font
 from .scene import Scene
 
@@ -25,41 +27,56 @@ class ConfigurationScene(Scene):
         self.button_font = get_font(34)
         self.help_font = get_font(28)
 
-        self.selected_operation: Operation | None = None
-        self.selected_difficulty: Difficulty | None = None
+        center_x = self.app.screen.get_rect().centerx
 
-        self.operation_buttons = {
-            Operation.ADDITION: Button(
-                "Addition", (130, 220, 240, 64), self.button_font
-            ),
-            Operation.SUBTRACTION: Button(
-                "Soustraction", (390, 220, 240, 64), self.button_font
-            ),
-            Operation.MULTIPLICATION: Button(
-                "Multiplication", (650, 220, 240, 64), self.button_font
-            ),
-            Operation.DIVISION: Button(
-                "Division", (910, 220, 240, 64), self.button_font
-            ),
-        }
+        operation_options = [
+            (Operation.ADDITION, "Addition"),
+            (Operation.SUBTRACTION, "Soustraction"),
+            (Operation.MULTIPLICATION, "Multiplication"),
+            (Operation.DIVISION, "Division"),
+        ]
 
-        self.difficulty_buttons = {
-            Difficulty.EASY: Button(
-                "Facile",
-                (250, 420, 240, 64),
-                self.button_font,
-            ),
-            Difficulty.MEDIUM: Button(
-                "Moyenne",
-                (520, 420, 240, 64),
-                self.button_font,
-            ),
-            Difficulty.HARD: Button(
-                "Difficile",
-                (790, 420, 240, 64),
-                self.button_font,
-            ),
-        }
+        operation_rects = centered_row(
+            len(operation_options),
+            center_x=center_x,
+            top=220,
+            item_size=(240, 64),
+            gap=20,
+        )
+
+        self.operation_group = ChoiceGroup(
+            {
+                operation: Button(label, rect, self.button_font)
+                for (operation, label), rect in zip(
+                    operation_options, operation_rects, strict=True
+                )
+            }
+        )
+
+        difficulty_options = [
+            (Difficulty.EASY, "Facile"),
+            (Difficulty.MEDIUM, "Moyenne"),
+            (Difficulty.HARD, "Difficile"),
+        ]
+
+        difficulty_rects = centered_row(
+            len(difficulty_options),
+            center_x=center_x,
+            top=420,
+            item_size=(240, 64),
+            gap=30,
+        )
+
+        self.difficulty_group = ChoiceGroup(
+            {
+                difficulty: Button(label, rect, self.button_font)
+                for (difficulty, label), rect in zip(
+                    difficulty_options,
+                    difficulty_rects,
+                    strict=True,
+                )
+            }
+        )
 
         self.start_button = Button(
             "Commencer",
@@ -75,24 +92,24 @@ class ConfigurationScene(Scene):
             self.app.change_scene(TitleScene(self.app))
             return
 
-        for operation, button in self.operation_buttons.items():
-            if button.handle_event(event):
-                self.selected_operation = operation
-                return
+        if self.operation_group.handle_event(event):
+            return
 
-        for difficulty, button in self.difficulty_buttons.items():
-            if button.handle_event(event):
-                self.selected_difficulty = difficulty
-                return
+        if self.difficulty_group.handle_event(event):
+            return
 
         if self.start_button.handle_event(event):
-            assert self.selected_operation is not None
-            assert self.selected_difficulty is not None
+            operation = self.operation_group.selected
+            difficulty = self.difficulty_group.selected
+
+            assert operation is not None
+            assert difficulty is not None
 
             from .quiz_scene import QuizScene
 
             config = QuizConfig(
-                difficulty=self.selected_difficulty, operation=self.selected_operation
+                difficulty=difficulty,
+                operation=operation,
             )
 
             self.app.change_scene(
@@ -104,7 +121,8 @@ class ConfigurationScene(Scene):
 
     def update(self, _delta_time: float) -> None:
         self.start_button.enabled = (
-            self.selected_operation is not None and self.selected_difficulty is not None
+            self.operation_group.selected is not None
+            and self.difficulty_group.selected is not None
         )
 
     def draw_content(self, surface: pygame.Surface) -> None:
@@ -126,11 +144,7 @@ class ConfigurationScene(Scene):
             center=(center_x, 165),
         )
 
-        for operation, button in self.operation_buttons.items():
-            button.draw(
-                surface,
-                selected=operation is self.selected_operation,
-            )
+        self.operation_group.draw(surface)
 
         draw_text(
             surface,
@@ -140,10 +154,12 @@ class ConfigurationScene(Scene):
             center=(center_x, 365),
         )
 
-        for difficulty, button in self.difficulty_buttons.items():
-            button.draw(surface, selected=difficulty is self.selected_difficulty)
+        self.difficulty_group.draw(surface)
 
-        if self.selected_operation is not None and self.selected_difficulty is not None:
+        if (
+            self.operation_group.selected is not None
+            and self.difficulty_group.selected is not None
+        ):
             help_text = "Configuration prête !"
         else:
             help_text = "Sélectionne une opération et une difficulté"

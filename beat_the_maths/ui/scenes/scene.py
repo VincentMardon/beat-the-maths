@@ -17,8 +17,8 @@ class Scene(ABC):
     def handle_event(self, event: pygame.event.Event) -> None:
         pass
 
-    def update(self, delta_time: float) -> None:
-        pass
+    def update(self, _delta_time: float) -> None: # noqa: B027
+        """Update the scene when it has time-dependent behavior."""
 
     def draw(self, surface: pygame.Surface) -> None:
         surface.fill(THEME.background)
