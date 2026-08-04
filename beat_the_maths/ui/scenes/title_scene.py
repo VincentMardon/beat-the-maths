@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 import pygame
 
+from ...i18n import Text
 from ..drawing import draw_text
 from ..theme import THEME, get_font
 from .scene import Scene
@@ -18,12 +19,18 @@ class TitleScene(Scene):
         self.title_font = get_font(88)
         self.subtitle_font = get_font(36)
         self.action_font = get_font(42)
+        self.settings_font = get_font(30)
 
         self.elapsed_time = 0.0
 
     def handle_event(self, event: pygame.event.Event) -> None:
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+        if event.type != pygame.KEYDOWN:
+            return
+
+        if event.key == pygame.K_RETURN:
             self.app.show_configuration()
+        elif event.key == pygame.K_s:
+            self.app.show_settings()
 
     def update(self, delta_time: float) -> None:
         self.elapsed_time += delta_time
@@ -42,7 +49,7 @@ class TitleScene(Scene):
 
         draw_text(
             surface,
-            "The serious game to heal your maths pain.",
+            self.app.translate(Text.TITLE_SUBTITLE),
             self.subtitle_font,
             THEME.text_subtitle,
             center=(center_x, center_y - 25),
@@ -53,9 +60,17 @@ class TitleScene(Scene):
 
         draw_text(
             surface,
-            "Appuie sur Entrée pour jouer",
+            self.app.translate(Text.TITLE_PLAY),
             self.action_font,
             THEME.accent,
-            center=(center_x, center_y + 100),
+            center=(center_x, center_y + 90),
             alpha=alpha,
+        )
+
+        draw_text(
+            surface,
+            self.app.translate(Text.TITLE_SETTINGS),
+            self.settings_font,
+            THEME.text_muted,
+            center=(center_x, center_y + 150),
         )

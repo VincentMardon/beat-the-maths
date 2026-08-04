@@ -2,10 +2,14 @@ import pygame
 
 from ..core.services.quiz_engine.game_session import GameSession
 from ..core.services.quiz_engine.quiz_config import QuizConfig
+from ..i18n import Language, Text
+from ..i18n import translate as translate_text
+from .app_settings import AppSettings
 from .scenes.configuration_scene import ConfigurationScene
 from .scenes.quiz_scene import QuizScene
 from .scenes.results_scene import ResultsScene
 from .scenes.scene import Scene
+from .scenes.settings_scene import SettingsScene
 from .scenes.title_scene import TitleScene
 
 WINDOW_SIZE = (1280, 720)
@@ -21,6 +25,7 @@ class PygameApp:
 
         self.clock = pygame.time.Clock()
         self.running = True
+        self.settings = AppSettings()
         self.scene: Scene = TitleScene(self)
 
     def run(self) -> None:
@@ -53,6 +58,9 @@ class PygameApp:
     def show_configuration(self) -> None:
         self._change_scene(ConfigurationScene(self))
 
+    def show_settings(self) -> None:
+        self._change_scene(SettingsScene(self))
+
     def start_quiz(self, config: QuizConfig) -> None:
         self._change_scene(
             QuizScene(
@@ -71,6 +79,16 @@ class PygameApp:
 
     def _change_scene(self, scene: Scene) -> None:
         self.scene = scene
+
+    def set_language(self, language: Language) -> None:
+        self.settings.language = language
+
+    def translate(self, text: Text, **values: object) -> str:
+        return translate_text(
+            self.settings.language,
+            text,
+            **values,
+        )
 
 
 def main() -> None:

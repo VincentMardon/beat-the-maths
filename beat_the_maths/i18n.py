@@ -85,7 +85,7 @@ CATALOGS: dict[Language, Catalog] = {
         Text.TITLE_PLAY: "Enter: play",
         Text.TITLE_SETTINGS: "S: settings",
         Text.SETTINGS_TITLE: "SETTINGS",
-        Text.SETTINGS_LANGUAGE: "Choose an language",
+        Text.SETTINGS_LANGUAGE: "Choose a language",
         Text.SETTINGS_BACK: "Backspace: title screen",
         Text.CONFIGURATION_TITLE: "SET UP YOUR GAME",
         Text.OPERATION_PROMPT: "Choose an operation",
