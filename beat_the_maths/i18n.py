@@ -107,7 +107,7 @@ CATALOGS: dict[Language, Catalog] = {
         Text.ANSWER_CORRECT: "Correct! {duration:.2f} s",
         Text.ANSWER_INCORRECT: ("Wrong! The answer was {solution}."),
         Text.QUIT: "Esc: quit",
-        Text.RESULTS_TITLE: "GAME OVER",
+        Text.RESULTS_TITLE: "QUIZ COMPLETE",
         Text.RESULTS_REPLAY: "Enter: play again",
         Text.RESULTS_BACK_TO_TITLE: ("Backspace: title screen    •    Esc: quit"),
     },

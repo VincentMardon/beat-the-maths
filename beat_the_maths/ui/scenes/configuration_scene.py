@@ -7,6 +7,7 @@ from ...core.services.quiz_engine.quiz_config import (
     Operation,
     QuizConfig,
 )
+from ...i18n import Text
 from ..components.button import Button
 from ..components.choice_group import ChoiceGroup
 from ..drawing import draw_text
@@ -30,10 +31,13 @@ class ConfigurationScene(Scene):
         center_x = self.app.screen.get_rect().centerx
 
         operation_options = [
-            (Operation.ADDITION, "Addition"),
-            (Operation.SUBTRACTION, "Soustraction"),
-            (Operation.MULTIPLICATION, "Multiplication"),
-            (Operation.DIVISION, "Division"),
+            (Operation.ADDITION, self.app.translate(Text.OPERATION_ADDITION)),
+            (Operation.SUBTRACTION, self.app.translate(Text.OPERATION_SUBTRACTION)),
+            (
+                Operation.MULTIPLICATION,
+                self.app.translate(Text.OPERATION_MULTIPLICATION),
+            ),
+            (Operation.DIVISION, self.app.translate(Text.OPERATION_DIVISION)),
         ]
 
         operation_rects = centered_row(
@@ -54,9 +58,9 @@ class ConfigurationScene(Scene):
         )
 
         difficulty_options = [
-            (Difficulty.EASY, "Facile"),
-            (Difficulty.MEDIUM, "Moyenne"),
-            (Difficulty.HARD, "Difficile"),
+            (Difficulty.EASY, self.app.translate(Text.DIFFICULTY_EASY)),
+            (Difficulty.MEDIUM, self.app.translate(Text.DIFFICULTY_MEDIUM)),
+            (Difficulty.HARD, self.app.translate(Text.DIFFICULTY_HARD)),
         ]
 
         difficulty_rects = centered_row(
@@ -79,7 +83,7 @@ class ConfigurationScene(Scene):
         )
 
         self.start_button = Button(
-            "Commencer",
+            self.app.translate(Text.START),
             (480, 550, 320, 64),
             self.button_font,
             enabled=False,
@@ -121,7 +125,7 @@ class ConfigurationScene(Scene):
 
         draw_text(
             surface,
-            "CONFIGURE TA PARTIE",
+            self.app.translate(Text.CONFIGURATION_TITLE),
             self.title_font,
             THEME.heading,
             center=(center_x, 75),
@@ -129,7 +133,7 @@ class ConfigurationScene(Scene):
 
         draw_text(
             surface,
-            "Choisis une opération",
+            self.app.translate(Text.OPERATION_PROMPT),
             self.section_font,
             THEME.accent,
             center=(center_x, 165),
@@ -139,7 +143,7 @@ class ConfigurationScene(Scene):
 
         draw_text(
             surface,
-            "Choisis une difficulté",
+            self.app.translate(Text.DIFFICULTY_PROMPT),
             self.section_font,
             THEME.accent,
             center=(center_x, 365),
@@ -151,9 +155,9 @@ class ConfigurationScene(Scene):
             self.operation_group.selected is not None
             and self.difficulty_group.selected is not None
         ):
-            help_text = "Configuration prête !"
+            help_text = self.app.translate(Text.CONFIGURATION_READY)
         else:
-            help_text = "Sélectionne une opération et une difficulté"
+            help_text = self.app.translate(Text.CONFIGURATION_INCOMPLETE)
 
         draw_text(
             surface,
@@ -167,7 +171,7 @@ class ConfigurationScene(Scene):
 
         draw_text(
             surface,
-            "Retour arrière : revenir au titre    •    Échap : quitter",
+            self.app.translate(Text.BACK_TO_TITLE),
             self.help_font,
             THEME.text_muted,
             center=(center_x, 660),

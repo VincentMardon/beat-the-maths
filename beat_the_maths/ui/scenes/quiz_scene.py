@@ -6,6 +6,7 @@ import pygame
 from ...core.services.quiz_engine.answer_result import AnswerResult
 from ...core.services.quiz_engine.quiz_config import QuizConfig
 from ...core.services.quiz_engine.quiz_engine import QuizEngine
+from ...i18n import Text
 from ..components.text_input import TextInput
 from ..drawing import draw_text
 from ..theme import THEME, get_font
@@ -37,7 +38,7 @@ class QuizScene(Scene):
         self.answer_input = TextInput(
             rect=(440, 390, 400, 80),
             font=self.answer_font,
-            placeholder="Ta réponse",
+            placeholder=self.app.translate(Text.ANSWER_PLACEHOLDER),
         )
 
         self.question_started_at = perf_counter()
@@ -81,9 +82,10 @@ class QuizScene(Scene):
     def draw_content(self, surface: pygame.Surface) -> None:
         center_x = surface.get_rect().centerx
 
-        progress = (
-            f"Question {self.engine.session.next_question_number}"
-            f" / {self.engine.session.config.question_count}"
+        progress = self.app.translate(
+            Text.QUIZ_PROGRESS,
+            current=self.engine.session.next_question_number,
+            total=self.engine.session.config.question_count,
         )
 
         draw_text(
@@ -105,14 +107,18 @@ class QuizScene(Scene):
         self.answer_input.draw(surface)
 
         if self.feedback_result is None:
-            feedback_text = "Écris ta réponse puis appuie sur Entrée"
+            feedback_text = self.app.translate(Text.ANSWER_PROMPT)
             feedback_color = THEME.text_muted
         elif self.feedback_result.is_correct:
-            feedback_text = f"Correct ! {self.feedback_result.duration:.2f} s"
+            feedback_text = self.app.translate(
+                Text.ANSWER_CORRECT,
+                duration=self.feedback_result.duration,
+            )
             feedback_color = THEME.success
         else:
-            feedback_text = (
-                f"Raté ! La réponse était {self.feedback_result.problem.solution}."
+            feedback_text = self.app.translate(
+                Text.ANSWER_INCORRECT,
+                solution=self.feedback_result.problem.solution,
             )
             feedback_color = THEME.failure
 
@@ -126,7 +132,7 @@ class QuizScene(Scene):
 
         draw_text(
             surface,
-            "Échap : quitter",
+            self.app.translate(Text.QUIT),
             self.help_font,
             THEME.text_muted,
             center=(center_x, 670),

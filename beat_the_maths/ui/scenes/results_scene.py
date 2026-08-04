@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 import pygame
 
 from ...core.services.quiz_engine.game_session import GameSession
+from ...i18n import Text
 from ..drawing import draw_text
 from ..theme import THEME, get_font
 from .scene import Scene
@@ -39,7 +40,7 @@ class ResultsScene(Scene):
 
         draw_text(
             surface,
-            "PARTIE TERMINÉE",
+            self.app.translate(Text.RESULTS_TITLE),
             self.title_font,
             THEME.heading,
             center=(center_x, 160),
@@ -57,7 +58,7 @@ class ResultsScene(Scene):
 
         draw_text(
             surface,
-            "Entrée : rejouer",
+            self.app.translate(Text.RESULTS_REPLAY),
             self.text_font,
             THEME.text_secondary,
             center=(center_x, 500),
@@ -65,7 +66,7 @@ class ResultsScene(Scene):
 
         draw_text(
             surface,
-            "Retour arrière : écran titre    •    Échap : quitter",
+            self.app.translate(Text.RESULTS_BACK_TO_TITLE),
             self.text_font,
             THEME.text_muted,
             center=(center_x, 650),
