@@ -10,7 +10,7 @@ class TextInput:
         rect: tuple[int, int, int, int],
         font: pygame.font.Font,
         placeholder: str = "",
-        maximum_length: int = 12,
+        maximum_length: int | None = 12,
     ) -> None:
         self.rect = pygame.Rect(rect)
         self.font = font
@@ -28,7 +28,9 @@ class TextInput:
 
         if event.key == pygame.K_BACKSPACE:
             self.text = self.text[:-1]
-        elif event.unicode.isdigit() and len(self.text) < self.maximum_length:
+        elif event.unicode.isdigit() and (
+            self.maximum_length is None or len(self.text) < self.maximum_length
+        ):
             self.text += event.unicode
 
         return False

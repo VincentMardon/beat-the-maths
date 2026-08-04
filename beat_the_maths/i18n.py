@@ -18,6 +18,9 @@ class Text(StrEnum):
     CONFIGURATION_TITLE = auto()
     OPERATION_PROMPT = auto()
     DIFFICULTY_PROMPT = auto()
+    QUESTION_COUNT_PROMPT = auto()
+    QUESTION_COUNT_CUSTOM = auto()
+    QUESTION_COUNT_INVALID = auto()
     OPERATION_ADDITION = auto()
     OPERATION_SUBTRACTION = auto()
     OPERATION_MULTIPLICATION = auto()
@@ -55,6 +58,11 @@ CATALOGS: dict[Language, Catalog] = {
         Text.CONFIGURATION_TITLE: "CONFIGURE TA PARTIE",
         Text.OPERATION_PROMPT: "Choisis une opération",
         Text.DIFFICULTY_PROMPT: "Choisis une difficulté",
+        Text.QUESTION_COUNT_PROMPT: "Nombre de questions",
+        Text.QUESTION_COUNT_CUSTOM: "Personnlaisé",
+        Text.QUESTION_COUNT_INVALID: (
+            "Le nombre de questions doit être supérieur à zéro"
+        ),
         Text.OPERATION_ADDITION: "Addition",
         Text.OPERATION_SUBTRACTION: "Soustraction",
         Text.OPERATION_MULTIPLICATION: "Multiplication",
@@ -63,7 +71,9 @@ CATALOGS: dict[Language, Catalog] = {
         Text.DIFFICULTY_MEDIUM: "Moyenne",
         Text.DIFFICULTY_HARD: "Difficile",
         Text.CONFIGURATION_READY: "Configuration prête !",
-        Text.CONFIGURATION_INCOMPLETE: ("Sélectionne une opération et une difficulté"),
+        Text.CONFIGURATION_INCOMPLETE: (
+            "Sélectionne une opération, une difficulté et un nombre de questions"
+        ),
         Text.START: "Commencer",
         Text.BACK_TO_TITLE: (
             "Retour arrière : revenir au titre    •    Échap : quitter"
@@ -90,6 +100,11 @@ CATALOGS: dict[Language, Catalog] = {
         Text.CONFIGURATION_TITLE: "SET UP YOUR GAME",
         Text.OPERATION_PROMPT: "Choose an operation",
         Text.DIFFICULTY_PROMPT: "Choose a difficulty",
+        Text.QUESTION_COUNT_PROMPT: "Number of questions",
+        Text.QUESTION_COUNT_CUSTOM: "Custom",
+        Text.QUESTION_COUNT_INVALID: (
+            "The number of questions must be greqter than zero"
+        ),
         Text.OPERATION_ADDITION: "Addition",
         Text.OPERATION_SUBTRACTION: "Subtraction",
         Text.OPERATION_MULTIPLICATION: "Multiplication",
@@ -98,7 +113,9 @@ CATALOGS: dict[Language, Catalog] = {
         Text.DIFFICULTY_MEDIUM: "Medium",
         Text.DIFFICULTY_HARD: "Hard",
         Text.CONFIGURATION_READY: "Configuration ready!",
-        Text.CONFIGURATION_INCOMPLETE: ("Select an operation and a difficulty"),
+        Text.CONFIGURATION_INCOMPLETE: (
+            "Select an operation, a difficulty and a number of questions"
+        ),
         Text.START: "Start",
         Text.BACK_TO_TITLE: ("Backspace: return to title    •    Esc: quit"),
         Text.QUIZ_PROGRESS: "Question {current} / {total}",

@@ -37,3 +37,15 @@ def test_quiz_requires_at_least_one_question(question_count):
             operation=Operation.ADDITION,
             question_count=question_count,
         )
+
+
+def test_quiz_accepts_large_question_count():
+    question_count = 10**20
+
+    config = QuizConfig(
+        difficulty=Difficulty.HARD,
+        operation=Operation.MULTIPLICATION,
+        question_count=question_count,
+    )
+
+    assert config.question_count == question_count
