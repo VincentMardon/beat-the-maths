@@ -1,9 +1,9 @@
 import pygame
 
 from ..core.services.achievement_engine import unlock_achievements
+from ..core.services.profile_store import get_profile_path, load_profile, save_profile
 from ..core.services.quiz_engine.game_session import GameSession
 from ..core.services.quiz_engine.quiz_config import QuizConfig
-from ..core.user_profile import UserProfile
 from ..i18n import Language, Text
 from ..i18n import translate as translate_text
 from .app_settings import AppSettings
@@ -28,7 +28,8 @@ class PygameApp:
         self.clock = pygame.time.Clock()
         self.running = True
         self.settings = AppSettings()
-        self.profile = UserProfile()
+        self.profile_path = get_profile_path()
+        self.profile = load_profile(self.profile_path)
         self.scene: Scene = TitleScene(self)
 
     def run(self) -> None:
@@ -78,8 +79,18 @@ class PygameApp:
             session,
         )
 
+        if newly_unlocked:
+            save_profile(
+                self.profile,
+                self.profile_path,
+            )
+
         self._change_scene(
-            ResultsScene(app=self, session=session, newly_unlocked=newly_unlocked)
+            ResultsScene(
+                app=self,
+                session=session,
+                newly_unlocked=newly_unlocked,
+            )
         )
 
     def _change_scene(self, scene: Scene) -> None:

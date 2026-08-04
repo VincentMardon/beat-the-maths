@@ -13,6 +13,7 @@ authors = [
     { name = "Vincent Mardon", email = "mardon.vincent@gmail.com"}
 ]
 dependencies = [
+    "platformdirs>=4,<5",
     "pygame>=2.6.1,<3",
 ]
 
