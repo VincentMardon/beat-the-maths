@@ -1,7 +1,9 @@
 import pygame
 
+from ..core.services.achievement_engine import unlock_achievements
 from ..core.services.quiz_engine.game_session import GameSession
 from ..core.services.quiz_engine.quiz_config import QuizConfig
+from ..core.user_profile import UserProfile
 from ..i18n import Language, Text
 from ..i18n import translate as translate_text
 from .app_settings import AppSettings
@@ -26,6 +28,7 @@ class PygameApp:
         self.clock = pygame.time.Clock()
         self.running = True
         self.settings = AppSettings()
+        self.profile = UserProfile()
         self.scene: Scene = TitleScene(self)
 
     def run(self) -> None:
@@ -70,11 +73,13 @@ class PygameApp:
         )
 
     def show_results(self, session: GameSession) -> None:
+        newly_unlocked = unlock_achievements(
+            self.profile,
+            session,
+        )
+
         self._change_scene(
-            ResultsScene(
-                app=self,
-                session=session,
-            )
+            ResultsScene(app=self, session=session, newly_unlocked=newly_unlocked)
         )
 
     def _change_scene(self, scene: Scene) -> None:

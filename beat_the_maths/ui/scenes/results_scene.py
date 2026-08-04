@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 import pygame
 
 from ...core.services.quiz_engine.game_session import GameSession
+from ...core.user_profile import AchievementId
 from ...i18n import Text
 from ..drawing import draw_text
 from ..theme import THEME, get_font
@@ -17,10 +18,12 @@ class ResultsScene(Scene):
         self,
         app: "PygameApp",
         session: GameSession,
+        newly_unlocked: frozenset[AchievementId],
     ) -> None:
         super().__init__(app)
 
         self.session = session
+        self.newly_unlocked = newly_unlocked
 
         self.title_font = get_font(72)
         self.score_font = get_font(110)
